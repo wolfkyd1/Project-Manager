@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Hub Pro - Advanced Project Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border: #334155;
+            --shadow: rgba(0, 0, 0, 0.3);
+            
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(45deg, #141e30, #243b55);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(60deg, #00c6ff, #0072ff, #00ff87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(102,126,234,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            color: #fff;
+            box-shadow: 0 0 40px rgba(102,126,234,0.8);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(102,126,234,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            color: #fff;
+            box-shadow: 0 0 40px rgba(102,126,234,0.8);
+            transform: scale(1.05);
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 1000;
+            min-width: 200px;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.625rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.25rem 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Quick Actions Bar */
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-filter {
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .quick-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quick-filter:hover:not(.active) {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .stat-icon.red { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .stat-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-content p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .toolbar-left {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-select, .sort-select {
+            padding: 0.5rem 2rem 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus, .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--bg-tertiary);
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .view-btn {
+            padding: 0.375rem 0.75rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 0.25rem;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .projects-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .project-card.overdue {
+            border-color: var(--danger);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .project-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            margin-right: 0.5rem;
+        }
+
+        .project-menu {
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-menu {
+            opacity: 1;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            gap: 0.25rem;
+        }
+
+        .status-badge.not-started {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+
+        .status-badge.in-progress {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status-badge.on-hold {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-badge.completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .priority-indicator {
+            width: 4px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .priority-high { background: var(--danger); }
+        .priority-medium { background: var(--warning); }
+        .priority-low { background: var(--info); }
+
+        .project-body {
+            padding: 1.25rem;
+            flex: 1;
+        }
+
+        .project-notes {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.375rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            padding: 0.125rem 0.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            border-radius: 9999px;
+            font-size: 0.625rem;
+            font-weight: 500;
+        }
+
+        .progress-section {
+            margin-bottom: 1rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .progress-label {
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 9999px;
+            transition: width 0.5s ease;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .overdue-indicator {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .project-actions {
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tag-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            min-height: 42px;
+        }
+
+        .tag-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: var(--text-primary);
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Kanban Board */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .kanban-column {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            min-height: 400px;
+        }
+
+        .kanban-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .kanban-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            color: var(--text-secondary);
+        }
+
+        .kanban-count {
+            background: var(--bg-tertiary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .kanban-tasks {
+            min-height: 200px;
+        }
+
+        .task-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            cursor: move;
+            transition: var(--transition);
+        }
+
+        .task-card:hover {
+            box-shadow: 0 2px 8px var(--shadow);
+            transform: scale(1.02);
+        }
+
+        .task-card.dragging {
+            opacity: 0.5;
+        }
+
+        .task-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .task-checkbox {
+            margin-top: 0.125rem;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--text-tertiary);
+        }
+
+        .task-priority {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 0.25rem;
+        }
+
+        .task-priority.high { background: var(--danger); }
+        .task-priority.medium { background: var(--warning); }
+        .task-priority.low { background: var(--info); }
+
+        .task-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.625rem;
+            color: var(--text-tertiary);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .task-card:hover .task-actions {
+            opacity: 1;
+        }
+
+        .add-task {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-task:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Task List View */
+        .task-list {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .task-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Activity Log */
+        .activity-log {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-action {
+            color: var(--text-primary);
+            margin-bottom: 0.125rem;
+        }
+
+        .activity-time {
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-tertiary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-text {
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 300px;
+            box-shadow: 0 4px 12px var(--shadow);
+            animation: slideInRight 0.3s ease;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--info);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.125rem;
+        }
+
+        .toast-message {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .search-container {
+                width: 100%;
+                max-width: none;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .modal-content {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .toast-container {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+            }
+
+            .quick-actions {
+                justify-content: center;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Checkbox Custom Style */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+
+        /* Pulse Animation for New Items */
+        .pulse {
+            animation: pulse 2s ease-in-out;
+        }
+
+        /* Archive Indicator */
+        .archived-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-tertiary);
+            color: var(--text-tertiary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span>🌐</span>
+                <span>CAM Project Manager</span>
+            </div>
+            
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search projects, tasks, or tags...">
+            </div>
+            
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openNewProjectModal()">
+                    <span>➕</span>
+                    <span>New Project</span>
+                </button>
+                
+                <div class="dropdown">
+                    <button class="btn btn-secondary" onclick="toggleDropdown(this)">
+                        <span>⚙️</span>
+                        <span>More</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button class="dropdown-item" onclick="showTemplates()">
+                            <span>📋</span>
+                            <span>Project Templates</span>
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onclick="exportData()">
+                            <span>📤</span>
+                            <span>Export Data</span>
+                        </button>
+                        <button class="dropdown-item" onclick="importData()">
+                            <span>📥</span>
+                            <span>Import Data</span>
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onclick="showArchived()">
+                            <span>📦</span>
+                            <span>Archived Projects</span>
+                        </button>
+                        <button class="dropdown-item" onclick="clearAllData()">
+                            <span>🗑️</span>
+                            <span>Clear All Data</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Quick Actions -->
+        <div class="quick-actions" id="quickActions">
+            <button class="quick-filter active" data-filter="all" onclick="setQuickFilter('all')">All Projects</button>
+            <button class="quick-filter" data-filter="active" onclick="setQuickFilter('active')">Active</button>
+            <button class="quick-filter" data-filter="overdue" onclick="setQuickFilter('overdue')">Overdue</button>
+            <button class="quick-filter" data-filter="high-priority" onclick="setQuickFilter('high-priority')">High Priority</button>
+            <button class="quick-filter" data-filter="this-week" onclick="setQuickFilter('this-week')">Due This Week</button>
+            <button class="quick-filter" data-filter="archived" onclick="setQuickFilter('archived')">Archived</button>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="stat-icon blue">📁</div>
+                <div class="stat-content">
+                    <h3 id="totalProjects">0</h3>
+                    <p>Total Projects</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-content">
+                    <h3 id="completedTasks">0</h3>
+                    <p>Tasks Completed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">⏳</div>
+                <div class="stat-content">
+                    <h3 id="pendingTasks">0</h3>
+                    <p>Tasks Pending</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">🚀</div>
+                <div class="stat-content">
+                    <h3 id="activeProjects">0</h3>
+                    <p>Active Projects</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">⚠️</div>
+                <div class="stat-content">
+                    <h3 id="overdueProjects">0</h3>
+                    <p>Overdue</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="filter-group">
+                    <label for="statusFilter" style="font-size: 0.875rem; color: var(--text-secondary);">Status:</label>
+                    <select class="filter-select" id="statusFilter" onchange="filterProjects()">
+                        <option value="all">All Status</option>
+                        <option value="not-started">Not Started</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="on-hold">On Hold</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sortBy" style="font-size: 0.875rem; color: var(--text-secondary);">Sort:</label>
+                    <select class="sort-select" id="sortBy" onchange="sortProjects()">
+                        <option value="name">Name</option>
+                        <option value="status">Status</option>
+                        <option value="priority">Priority</option>
+                        <option value="completion">Completion %</option>
+                        <option value="startDate">Start Date</option>
+                        <option value="dueDate">Due Date</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="setViewMode('grid')">Grid</button>
+                <button class="view-btn" onclick="setViewMode('list')">List</button>
+            </div>
+        </div>
+
+        <!-- Projects Container -->
+        <div class="projects-grid" id="projectsGrid">
+            <!-- Projects will be rendered here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">No projects yet</div>
+            <div class="empty-text">Start by creating your first project or use one of our templates to get started quickly.</div>
+            <button class="btn btn-primary" onclick="openNewProjectModal()">
+                <span>➕</span>
+                <span>Create Project</span>
+            </button>
+            <button class="btn btn-secondary" onclick="showTemplates()">
+                <span>📋</span>
+                <span>Use Template</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">New Project</h2>
+                <button class="btn btn-icon" onclick="closeModal('projectModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <div class="form-group">
+                        <label class="form-label" for="projectName">Project Name *</label>
+                        <input type="text" class="form-input" id="projectName" required placeholder="Enter project name">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="projectStatus">Status</label>
+                            <select class="form-select" id="projectStatus">
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="on-hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="projectPriority">Priority</label>
+                            <select class="form-select" id="projectPriority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="projectStartDate">Start Date</label>
+                            <input type="date" class="form-input" id="projectStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="projectDueDate">Due Date</label>
+                            <input type="date" class="form-input" id="projectDueDate">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <div class="tag-input-container" id="tagContainer">
+                            <input type="text" class="tag-input" id="tagInput" placeholder="Add tags (press Enter)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="projectNotes">Description</label>
+                        <textarea class="form-textarea" id="projectNotes" rows="4" placeholder="Enter project description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('projectModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailsTitle">Project Details</h2>
+                <button class="btn btn-icon" onclick="closeModal('detailsModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('overview')">Overview</button>
+                    <button class="tab" onclick="switchTab('tasks')">Task List</button>
+                    <button class="tab" onclick="switchTab('kanban')">Kanban Board</button>
+                    <button class="tab" onclick="switchTab('activity')">Activity Log</button>
+                </div>
+                
+                <!-- Overview Tab -->
+                <div class="tab-content active" id="overviewTab">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="detailStatus" onchange="updateProjectDetail('status')">
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="on-hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Priority</label>
+                            <select class="form-select" id="detailPriority" onchange="updateProjectDetail('priority')">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-input" id="detailStartDate" onchange="updateProjectDetail('startDate')">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-input" id="detailDueDate" onchange="updateProjectDetail('dueDate')">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <div class="tag-input-container" id="detailTagContainer">
+                            <input type="text" class="tag-input" id="detailTagInput" placeholder="Add tags (press Enter)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="detailNotes" rows="6" onblur="updateProjectDetail('notes')"></textarea>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Overall Progress</span>
+                            <span class="progress-value" id="detailProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="detailProgressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-secondary);">Project Statistics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                            <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div style="font-size: 1.25rem; font-weight: 700;" id="projectTaskCount">0</div>
+                                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Total Tasks</div>
+                            </div>
+                            <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div style="font-size: 1.25rem; font-weight: 700;" id="projectDaysLeft">-</div>
+                                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Days Left</div>
+                            </div>
+                            <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div style="font-size: 1.25rem; font-weight: 700;" id="projectDuration">-</div>
+                                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Duration</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tasks Tab -->
+                <div class="tab-content" id="tasksTab">
+                    <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                        <button class="btn btn-primary" onclick="addNewTask()">
+                            <span>➕</span>
+                            <span>Add Task</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="bulkComplete()">
+                            <span>✅</span>
+                            <span>Complete All</span>
+                        </button>
+                    </div>
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Kanban Tab -->
+                <div class="tab-content" id="kanbanTab">
+                    <div class="kanban-board">
+                        <div class="kanban-column" data-status="todo">
+                            <div class="kanban-header">
+                                <span class="kanban-title">To Do</span>
+                                <span class="kanban-count" id="todoCount">0</span>
+                            </div>
+                            <div class="kanban-tasks" id="todoTasks" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <!-- Tasks will be rendered here -->
+                            </div>
+                            <button class="add-task" onclick="addNewTask('todo')">+ Add Task</button>
+                        </div>
+                        
+                        <div class="kanban-column" data-status="in-progress">
+                            <div class="kanban-header">
+                                <span class="kanban-title">In Progress</span>
+                                <span class="kanban-count" id="progressCount">0</span>
+                            </div>
+                            <div class="kanban-tasks" id="progressTasks" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <!-- Tasks will be rendered here -->
+                            </div>
+                            <button class="add-task" onclick="addNewTask('in-progress')">+ Add Task</button>
+                        </div>
+                        
+                        <div class="kanban-column" data-status="done">
+                            <div class="kanban-header">
+                                <span class="kanban-title">Done</span>
+                                <span class="kanban-count" id="doneCount">0</span>
+                            </div>
+                            <div class="kanban-tasks" id="doneTasks" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <!-- Tasks will be rendered here -->
+                            </div>
+                            <button class="add-task" onclick="addNewTask('done')">+ Add Task</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity Tab -->
+                <div class="tab-content" id="activityTab">
+                    <div class="activity-log" id="activityLog">
+                        <!-- Activity items will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="archiveProject()">📦 Archive</button>
+                <button class="btn btn-secondary" onclick="duplicateProject()">📋 Duplicate</button>
+                <button class="btn btn-danger" onclick="deleteProject()">🗑️ Delete</button>
+                <button class="btn btn-primary" onclick="closeModal('detailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Templates Modal -->
+    <div class="modal" id="templatesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Project Templates</h2>
+                <button class="btn btn-icon" onclick="closeModal('templatesModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+
+                                <!--Add Buttons for templates here-->
+
+                    <!--<div class="template-card" onclick="useTemplate('website')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌐</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">Website Development</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Template for web development projects</p>
+                    </div>
+                    <div class="template-card" onclick="useTemplate('app')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📱</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">Mobile App</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary);">iOS/Android app development</p>
+                    </div>
+                    <div class="template-card" onclick="useTemplate('marketing')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">Marketing Campaign</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Marketing and promotion projects</p>
+                    </div>
+                    <div class="template-card" onclick="useTemplate('event')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎉</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">Event Planning</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Organize events and conferences</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .template-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .template-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+    </style>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="importFile" style="display: none;" accept=".json" onchange="handleImport(event)">
+
+    <script>
+        // Data Management
+        let projects = [];
+        let currentProject = null;
+        let currentTab = 'overview';
+        let draggedTask = null;
+        let viewMode = 'grid';
+        let quickFilter = 'all';
+        let activityLog = [];
+        let projectTags = [];
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage();
+            renderProjects();
+            updateStats();
+            initKeyboardShortcuts();
+            initTagInput();
+            
+            // Set today's date as default start date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('projectStartDate').value = today;
+        });
+
+        // Storage Functions
+        function saveToStorage() {
+            localStorage.setItem('projectHub_projects', JSON.stringify(projects));
+            localStorage.setItem('projectHub_activityLog', JSON.stringify(activityLog));
+            localStorage.setItem('projectHub_lastSaved', new Date().toISOString());
+        }
+
+        function loadFromStorage() {
+            const stored = localStorage.getItem('projectHub_projects');
+            const storedActivity = localStorage.getItem('projectHub_activityLog');
+            
+            if (stored) {
+                projects = JSON.parse(stored);
+            }
+            
+            if (storedActivity) {
+                activityLog = JSON.parse(storedActivity);
+            }
+        }
+
+        // Utility Functions
+        function generateId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function getProjectCompletion(project) {
+            if (!project.tasks || project.tasks.length === 0) return 0;
+            const completed = project.tasks.filter(t => t.completed).length;
+            return Math.round((completed / project.tasks.length) * 100);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function getDaysLeft(dueDate) {
+            if (!dueDate) return null;
+            const due = new Date(dueDate);
+            const today = new Date();
+            const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
+        function getProjectDuration(startDate, endDate) {
+            if (!startDate) return null;
+            const start = new Date(startDate);
+            const end = endDate ? new Date(endDate) : new Date();
+            const diff = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
+        function isOverdue(project) {
+            if (!project.dueDate || project.status === 'completed') return false;
+            return getDaysLeft(project.dueDate) < 0;
+        }
+
+        function logActivity(action, projectName) {
+            const activity = {
+                id: generateId(),
+                action: action,
+                project: projectName,
+                timestamp: new Date().toISOString()
+            };
+            activityLog.unshift(activity);
+            // Keep only last 100 activities
+            if (activityLog.length > 100) {
+                activityLog = activityLog.slice(0, 100);
+            }
+            saveToStorage();
+        }
+
+        // Project CRUD Operations
+        function openNewProjectModal() {
+            document.getElementById('modalTitle').textContent = 'New Project';
+            document.getElementById('projectForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('projectStartDate').value = today;
+            document.getElementById('projectModal').classList.add('active');
+            projectTags = [];
+            renderTags();
+        }
+
+        function openEditProjectModal(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            document.getElementById('modalTitle').textContent = 'Edit Project';
+            document.getElementById('projectName').value = project.name;
+            document.getElementById('projectStatus').value = project.status;
+            document.getElementById('projectPriority').value = project.priority;
+            document.getElementById('projectStartDate').value = project.startDate || '';
+            document.getElementById('projectDueDate').value = project.dueDate || '';
+            document.getElementById('projectNotes').value = project.notes || '';
+            
+            projectTags = project.tags || [];
+            renderTags();
+            
+            currentProject = project;
+            document.getElementById('projectModal').classList.add('active');
+        }
+
+        function saveProject() {
+            const name = document.getElementById('projectName').value.trim();
+            if (!name) {
+                showToast('error', 'Error', 'Project name is required');
+                return;
+            }
+            
+            const projectData = {
+                name: name,
+                status: document.getElementById('projectStatus').value,
+                priority: document.getElementById('projectPriority').value,
+                startDate: document.getElementById('projectStartDate').value,
+                dueDate: document.getElementById('projectDueDate').value,
+                notes: document.getElementById('projectNotes').value,
+                tags: projectTags
+            };
+            
+            if (currentProject) {
+                // Edit existing project
+                Object.assign(currentProject, projectData);
+                logActivity('Updated project', currentProject.name);
+                showToast('success', 'Success', 'Project updated successfully');
+            } else {
+                // Create new project
+                const newProject = {
+                    id: generateId(),
+                    ...projectData,
+                    tasks: [],
+                    archived: false,
+                    createdAt: new Date().toISOString()
+                };
+                projects.push(newProject);
+                logActivity('Created project', newProject.name);
+                showToast('success', 'Success', 'Project created successfully');
+            }
+            
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            closeModal('projectModal');
+            currentProject = null;
+            projectTags = [];
+        }
+
+        function deleteProject(projectId) {
+            if (!projectId && currentProject) {
+                projectId = currentProject.id;
+            }
+            
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            if (!confirm(`Are you sure you want to delete "${project.name}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            projects = projects.filter(p => p.id !== projectId);
+            logActivity('Deleted project', project.name);
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            closeModal('detailsModal');
+            showToast('success', 'Success', 'Project deleted successfully');
+        }
+
+        function duplicateProject(projectId) {
+            if (!projectId && currentProject) {
+                projectId = currentProject.id;
+            }
+            
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const duplicate = {
+                ...project,
+                id: generateId(),
+                name: project.name + ' (Copy)',
+                tasks: project.tasks ? project.tasks.map(t => ({ ...t, id: generateId() })) : [],
+                archived: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            projects.push(duplicate);
+            logActivity('Duplicated project', duplicate.name);
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            closeModal('detailsModal');
+            showToast('success', 'Success', 'Project duplicated successfully');
+        }
+
+        function archiveProject(projectId) {
+            if (!projectId && currentProject) {
+                projectId = currentProject.id;
+            }
+            
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            project.archived = !project.archived;
+            const action = project.archived ? 'Archived project' : 'Unarchived project';
+            logActivity(action, project.name);
+            
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            closeModal('detailsModal');
+            showToast('success', 'Success', `Project ${project.archived ? 'archived' : 'unarchived'} successfully`);
+        }
+
+        // Project Details
+        function openProjectDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            currentProject = project;
+            
+            document.getElementById('detailsTitle').textContent = project.name;
+            document.getElementById('detailStatus').value = project.status;
+            document.getElementById('detailPriority').value = project.priority;
+            document.getElementById('detailStartDate').value = project.startDate || '';
+            document.getElementById('detailDueDate').value = project.dueDate || '';
+            document.getElementById('detailNotes').value = project.notes || '';
+            
+            // Update project statistics
+            const taskCount = project.tasks ? project.tasks.length : 0;
+            const daysLeft = getDaysLeft(project.dueDate);
+            const duration = getProjectDuration(project.startDate, project.dueDate);
+            
+            document.getElementById('projectTaskCount').textContent = taskCount;
+            document.getElementById('projectDaysLeft').textContent = daysLeft !== null ? 
+                (daysLeft < 0 ? `${Math.abs(daysLeft)} overdue` : `${daysLeft} days`) : '-';
+            document.getElementById('projectDuration').textContent = duration ? `${duration} days` : '-';
+            
+            // Set up tags
+            projectTags = project.tags || [];
+            renderDetailTags();
+            
+            const completion = getProjectCompletion(project);
+            document.getElementById('detailProgress').textContent = completion + '%';
+            document.getElementById('detailProgressBar').style.width = completion + '%';
+            
+            renderTasks();
+            renderKanban();
+            renderActivityLog();
+            
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function updateProjectDetail(field) {
+            if (!currentProject) return;
+            
+            switch(field) {
+                case 'status':
+                    currentProject.status = document.getElementById('detailStatus').value;
+                    break;
+                case 'priority':
+                    currentProject.priority = document.getElementById('detailPriority').value;
+                    break;
+                case 'startDate':
+                    currentProject.startDate = document.getElementById('detailStartDate').value;
+                    break;
+                case 'dueDate':
+                    currentProject.dueDate = document.getElementById('detailDueDate').value;
+                    break;
+                case 'notes':
+                    currentProject.notes = document.getElementById('detailNotes').value;
+                    break;
+            }
+            
+            logActivity(`Updated ${field}`, currentProject.name);
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            
+            // Update statistics if dates changed
+            if (field === 'startDate' || field === 'dueDate') {
+                const daysLeft = getDaysLeft(currentProject.dueDate);
+                const duration = getProjectDuration(currentProject.startDate, currentProject.dueDate);
+                
+                document.getElementById('projectDaysLeft').textContent = daysLeft !== null ? 
+                    (daysLeft < 0 ? `${Math.abs(daysLeft)} overdue` : `${daysLeft} days`) : '-';
+                document.getElementById('projectDuration').textContent = duration ? `${duration} days` : '-';
+            }
+        }
+
+        // Task Management
+        function addNewTask(status = 'todo') {
+            if (!currentProject) return;
+            
+            const taskText = prompt('Enter task description:');
+            if (!taskText || !taskText.trim()) return;
+            
+            const priority = prompt('Task priority (high/medium/low):', 'medium');
+            
+            const newTask = {
+                id: generateId(),
+                text: taskText.trim(),
+                completed: status === 'done',
+                status: status,
+                priority: priority || 'medium',
+                createdAt: new Date().toISOString()
+            };
+            
+            if (!currentProject.tasks) currentProject.tasks = [];
+            currentProject.tasks.push(newTask);
+            
+            logActivity('Added task', currentProject.name);
+            saveToStorage();
+            renderTasks();
+            renderKanban();
+            updateProjectProgress();
+            showToast('success', 'Success', 'Task added successfully');
+        }
+
+        function toggleTask(taskId) {
+            if (!currentProject) return;
+            
+            const task = currentProject.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            task.completed = !task.completed;
+            task.status = task.completed ? 'done' : 'todo';
+            
+            logActivity(task.completed ? 'Completed task' : 'Uncompleted task', currentProject.name);
+            saveToStorage();
+            renderTasks();
+            renderKanban();
+            updateProjectProgress();
+        }
+
+        function editTask(taskId) {
+            if (!currentProject) return;
+            
+            const task = currentProject.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            const newText = prompt('Edit task:', task.text);
+            if (newText && newText.trim()) {
+                task.text = newText.trim();
+                logActivity('Edited task', currentProject.name);
+                saveToStorage();
+                renderTasks();
+                renderKanban();
+                showToast('success', 'Success', 'Task updated successfully');
+            }
+        }
+
+        function deleteTask(taskId) {
+            if (!currentProject) return;
+            
+            currentProject.tasks = currentProject.tasks.filter(t => t.id !== taskId);
+            
+            logActivity('Deleted task', currentProject.name);
+            saveToStorage();
+            renderTasks();
+            renderKanban();
+            updateProjectProgress();
+            showToast('success', 'Success', 'Task deleted successfully');
+        }
+
+        function bulkComplete() {
+            if (!currentProject || !currentProject.tasks) return;
+            
+            currentProject.tasks.forEach(task => {
+                task.completed = true;
+                task.status = 'done';
+            });
+            
+            logActivity('Completed all tasks', currentProject.name);
+            saveToStorage();
+            renderTasks();
+            renderKanban();
+            updateProjectProgress();
+            showToast('success', 'Success', 'All tasks marked as complete');
+        }
+
+        function updateProjectProgress() {
+            const completion = getProjectCompletion(currentProject);
+            document.getElementById('detailProgress').textContent = completion + '%';
+            document.getElementById('detailProgressBar').style.width = completion + '%';
+            
+            const taskCount = currentProject.tasks ? currentProject.tasks.length : 0;
+            document.getElementById('projectTaskCount').textContent = taskCount;
+            
+            renderProjects();
+            updateStats();
+        }
+
+        // Rendering Functions
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            let filteredProjects = projects.filter(p => !p.archived);
+            
+            // Apply quick filter
+            switch(quickFilter) {
+                case 'active':
+                    filteredProjects = filteredProjects.filter(p => p.status === 'in-progress');
+                    break;
+                case 'overdue':
+                    filteredProjects = filteredProjects.filter(p => isOverdue(p));
+                    break;
+                case 'high-priority':
+                    filteredProjects = filteredProjects.filter(p => p.priority === 'high');
+                    break;
+                case 'this-week':
+                    filteredProjects = filteredProjects.filter(p => {
+                        const daysLeft = getDaysLeft(p.dueDate);
+                        return daysLeft !== null && daysLeft >= 0 && daysLeft <= 7;
+                    });
+                    break;
+                case 'archived':
+                    filteredProjects = projects.filter(p => p.archived);
+                    break;
+            }
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredProjects = filteredProjects.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    (p.notes && p.notes.toLowerCase().includes(searchTerm)) ||
+                    (p.tags && p.tags.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+                    (p.tasks && p.tasks.some(t => t.text.toLowerCase().includes(searchTerm)))
+                );
+            }
+            
+            // Apply status filter
+            if (statusFilter !== 'all') {
+                filteredProjects = filteredProjects.filter(p => p.status === statusFilter);
+            }
+            
+            if (filteredProjects.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.className = viewMode === 'list' ? 'projects-grid list-view' : 'projects-grid';
+            
+            grid.innerHTML = filteredProjects.map(project => {
+                const completion = getProjectCompletion(project);
+                const taskCount = project.tasks ? project.tasks.length : 0;
+                const completedTasks = project.tasks ? project.tasks.filter(t => t.completed).length : 0;
+                const daysLeft = getDaysLeft(project.dueDate);
+                const overdue = isOverdue(project);
+                
+                return `
+                    <div class="project-card ${overdue ? 'overdue' : ''}" data-id="${project.id}">
+                        ${project.archived ? '<div class="archived-badge">Archived</div>' : ''}
+                        <div class="priority-indicator priority-${project.priority}"></div>
+                        <div class="project-header">
+                            <div class="project-title-row">
+                                <h3 class="project-title">${project.name}</h3>
+                                <div class="project-menu">
+                                    <button class="btn btn-icon" onclick="openEditProjectModal('${project.id}')">✏️</button>
+                                </div>
+                            </div>
+                            <span class="status-badge ${project.status}">
+                                <span>${project.status === 'not-started' ? '⏸' : project.status === 'in-progress' ? '▶' : project.status === 'on-hold' ? '⏸' : '✓'}</span>
+                                <span>${project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                            </span>
+                        </div>
+                        <div class="project-body">
+                            ${project.tags && project.tags.length > 0 ? `
+                                <div class="project-tags">
+                                    ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="project-notes">
+                                ${project.notes || 'No description available'}
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progress</span>
+                                    <span class="progress-value">${completion}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${completion}%"></div>
+                                </div>
+                            </div>
+                            <div class="project-meta">
+                                <div class="meta-item">
+                                    <span>📋</span>
+                                    <span>${completedTasks}/${taskCount} tasks</span>
+                                </div>
+                                ${project.startDate ? `
+                                    <div class="meta-item">
+                                        <span>🗓️</span>
+                                        <span>Started ${formatDate(project.startDate)}</span>
+                                    </div>
+                                ` : ''}
+                                ${project.dueDate ? `
+                                    <div class="meta-item ${overdue ? 'overdue-indicator' : ''}">
+                                        <span>⏰</span>
+                                        <span>${overdue ? 'Overdue' : `Due ${formatDate(project.dueDate)}`}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-secondary" onclick="openProjectDetails('${project.id}')">View Details</button>
+                            <button class="btn btn-secondary" onclick="duplicateProject('${project.id}')">Duplicate</button>
+                            <button class="btn btn-danger" onclick="deleteProject('${project.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTasks() {
+            if (!currentProject) return;
+            
+            const taskList = document.getElementById('taskList');
+            
+            if (!currentProject.tasks || currentProject.tasks.length === 0) {
+                taskList.innerHTML = '<div class="empty-state" style="padding: 2rem;"><div class="empty-text">No tasks yet. Add your first task!</div></div>';
+                return;
+            }
+            
+            taskList.innerHTML = currentProject.tasks.map(task => `
+                <div class="task-item">
+                    <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
+                           onchange="toggleTask('${task.id}')">
+                    <span class="task-priority ${task.priority}"></span>
+                    <span class="task-text ${task.completed ? 'completed' : ''}" style="flex: 1;">
+                        ${task.text}
+                    </span>
+                    <div class="task-actions">
+                        <button class="btn btn-icon" onclick="editTask('${task.id}')">✏️</button>
+                        <button class="btn btn-icon" onclick="deleteTask('${task.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderKanban() {
+            if (!currentProject) return;
+            
+            const columns = {
+                todo: document.getElementById('todoTasks'),
+                'in-progress': document.getElementById('progressTasks'),
+                done: document.getElementById('doneTasks')
+            };
+            
+            const counts = { todo: 0, 'in-progress': 0, done: 0 };
+            
+            // Clear columns
+            Object.values(columns).forEach(col => col.innerHTML = '');
+            
+            if (!currentProject.tasks || currentProject.tasks.length === 0) {
+                Object.values(columns).forEach(col => {
+                    col.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-tertiary); font-size: 0.875rem;">No tasks</div>';
+                });
+                
+                document.getElementById('todoCount').textContent = '0';
+                document.getElementById('progressCount').textContent = '0';
+                document.getElementById('doneCount').textContent = '0';
+                return;
+            }
+            
+            currentProject.tasks.forEach(task => {
+                const status = task.status || (task.completed ? 'done' : 'todo');
+                counts[status]++;
+                
+                const taskCard = document.createElement('div');
+                taskCard.className = 'task-card';
+                taskCard.draggable = true;
+                taskCard.dataset.taskId = task.id;
+                taskCard.innerHTML = `
+                    <div class="task-content">
+                        <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
+                               onchange="toggleTask('${task.id}')">
+                        <span class="task-priority ${task.priority}"></span>
+                        <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn btn-icon" onclick="editTask('${task.id}')">✏️</button>
+                        <button class="btn btn-icon" onclick="deleteTask('${task.id}')">🗑️</button>
+                    </div>
+                `;
+                
+                taskCard.addEventListener('dragstart', drag);
+                taskCard.addEventListener('dragend', dragEnd);
+                
+                columns[status].appendChild(taskCard);
+            });
+            
+            document.getElementById('todoCount').textContent = counts.todo;
+            document.getElementById('progressCount').textContent = counts['in-progress'];
+            document.getElementById('doneCount').textContent = counts.done;
+        }
+
+        function renderActivityLog() {
+            const logContainer = document.getElementById('activityLog');
+            
+            const projectActivities = activityLog.filter(a => a.project === currentProject.name).slice(0, 20);
+            
+            if (projectActivities.length === 0) {
+                logContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-tertiary);">No activity yet</div>';
+                return;
+            }
+            
+            logContainer.innerHTML = projectActivities.map(activity => {
+                const timeAgo = getTimeAgo(activity.timestamp);
+                const icon = activity.action.includes('Created') ? '➕' :
+                            activity.action.includes('Updated') ? '✏️' :
+                            activity.action.includes('Deleted') ? '🗑️' :
+                            activity.action.includes('Completed') ? '✅' :
+                            activity.action.includes('Added') ? '➕' : '📝';
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon">${icon}</div>
+                        <div class="activity-content">
+                            <div class="activity-action">${activity.action}</div>
+                            <div class="activity-time">${timeAgo}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            if (seconds < 2592000) return `${Math.floor(seconds / 86400)} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        // Drag and Drop
+        function drag(e) {
+            draggedTask = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function dragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            if (!draggedTask || !currentProject) return;
+            
+            const taskId = draggedTask.dataset.taskId;
+            const task = currentProject.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            const column = e.target.closest('.kanban-tasks');
+            if (!column) return;
+            
+            const newStatus = column.id.replace('Tasks', '').replace('progress', 'in-progress');
+            task.status = newStatus;
+            task.completed = newStatus === 'done';
+            
+            column.appendChild(draggedTask);
+            
+            logActivity(`Moved task to ${newStatus}`, currentProject.name);
+            saveToStorage();
+            renderKanban();
+            updateProjectProgress();
+            
+            draggedTask = null;
+        }
+
+        // UI Functions
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            if (tabName === 'activity') {
+                renderActivityLog();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            if (modalId === 'projectModal') {
+                currentProject = null;
+                projectTags = [];
+            }
+        }
+
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️'
+            };
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type]}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <span class="toast-close" onclick="this.parentElement.remove()">✕</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        function toggleDropdown(button) {
+            const dropdown = button.parentElement;
+            dropdown.classList.toggle('active');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove('active');
+                }
+            });
+            
+            // Close on outside click
+            document.addEventListener('click', function closeDropdown(e) {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                    document.removeEventListener('click', closeDropdown);
+                }
+            });
+        }
+
+        // View Mode
+        function setViewMode(mode) {
+            viewMode = mode;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            renderProjects();
+        }
+
+        // Quick Filters
+        function setQuickFilter(filter) {
+            quickFilter = filter;
+            document.querySelectorAll('.quick-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            renderProjects();
+        }
+
+        // Search and Filter
+        function filterProjects() {
+            renderProjects();
+        }
+
+        function sortProjects() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            projects.sort((a, b) => {
+                switch(sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'status':
+                        const statusOrder = ['not-started', 'in-progress', 'on-hold', 'completed'];
+                        return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+                    case 'completion':
+                        return getProjectCompletion(b) - getProjectCompletion(a);
+                    case 'priority':
+                        const priorityOrder = ['high', 'medium', 'low'];
+                        return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+                    case 'startDate':
+                        return new Date(b.startDate || 0) - new Date(a.startDate || 0);
+                    case 'dueDate':
+                        return new Date(a.dueDate || '9999') - new Date(b.dueDate || '9999');
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderProjects();
+        }
+
+        // Statistics
+        function updateStats() {
+            const activeProjects = projects.filter(p => !p.archived);
+            const totalProjects = activeProjects.length;
+            const inProgressProjects = activeProjects.filter(p => p.status === 'in-progress').length;
+            const overdueProjects = activeProjects.filter(p => isOverdue(p)).length;
+            
+            let totalTasks = 0;
+            let completedTasks = 0;
+            
+            activeProjects.forEach(project => {
+                if (project.tasks) {
+                    totalTasks += project.tasks.length;
+                    completedTasks += project.tasks.filter(t => t.completed).length;
+                }
+            });
+            
+            document.getElementById('totalProjects').textContent = totalProjects;
+            document.getElementById('activeProjects').textContent = inProgressProjects;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('pendingTasks').textContent = totalTasks - completedTasks;
+            document.getElementById('overdueProjects').textContent = overdueProjects;
+        }
+
+        // Templates
+        function showTemplates() {
+            document.getElementById('templatesModal').classList.add('active');
+        }
+        /*Create your own templates as needed using this as reference
+        Go to line 1595 to add the button in the templates modal*/
+        function useTemplate(type) {
+            const templates = {
+            /*    website: {
+                    name: 'Website Development Project',
+                    status: 'not-started',
+                    priority: 'high',
+                    notes: 'Complete website development including design, development, testing, and deployment.',
+                    tags: ['web', 'development', 'frontend'],
+                    tasks: [
+                        { text: 'Gather requirements', priority: 'high', status: 'todo' },
+                        { text: 'Create wireframes', priority: 'high', status: 'todo' },
+                        { text: 'Design mockups', priority: 'medium', status: 'todo' },
+                        { text: 'Setup development environment', priority: 'medium', status: 'todo' },
+                        { text: 'Develop homepage', priority: 'high', status: 'todo' },
+                        { text: 'Develop internal pages', priority: 'medium', status: 'todo' },
+                        { text: 'Implement responsive design', priority: 'high', status: 'todo' },
+                        { text: 'Testing and debugging', priority: 'high', status: 'todo' },
+                        { text: 'Deploy to production', priority: 'high', status: 'todo' }
+                    ]
+                },
+                app: {
+                    name: 'Mobile App Development',
+                    status: 'not-started',
+                    priority: 'high',
+                    notes: 'Native mobile application development for iOS and Android platforms.',
+                    tags: ['mobile', 'app', 'ios', 'android'],
+                    tasks: [
+                        { text: 'Define app requirements', priority: 'high', status: 'todo' },
+                        { text: 'Create UI/UX design', priority: 'high', status: 'todo' },
+                        { text: 'Setup development environment', priority: 'medium', status: 'todo' },
+                        { text: 'Develop authentication', priority: 'high', status: 'todo' },
+                        { text: 'Implement core features', priority: 'high', status: 'todo' },
+                        { text: 'Integrate APIs', priority: 'medium', status: 'todo' },
+                        { text: 'Test on devices', priority: 'high', status: 'todo' },
+                        { text: 'Submit to app stores', priority: 'high', status: 'todo' }
+                    ]
+                },*/
+            };
+            
+            const template = templates[type];
+            if (!template) return;
+            
+            const newProject = {
+                id: generateId(),
+                ...template,
+                startDate: new Date().toISOString().split('T')[0],
+                archived: false,
+                tasks: template.tasks.map(t => ({
+                    id: generateId(),
+                    ...t,
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                })),
+                createdAt: new Date().toISOString()
+            };
+            
+            projects.push(newProject);
+            logActivity('Created project from template', newProject.name);
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            closeModal('templatesModal');
+            showToast('success', 'Success', `Created project from ${type} template`);
+        }
+
+        // Export/Import
+        function exportData() {
+            const data = {
+                projects: projects,
+                activityLog: activityLog,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `projecthub_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('success', 'Export Complete', 'Your data has been exported successfully');
+        }
+
+        function importData() {
+            document.getElementById('importFile').click();
+        }
+
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.projects || !Array.isArray(data.projects)) {
+                        throw new Error('Invalid data format');
+                    }
+                    
+                    if (confirm('This will replace all existing data. Are you sure you want to continue?')) {
+                        projects = data.projects;
+                        activityLog = data.activityLog || [];
+                        saveToStorage();
+                        renderProjects();
+                        updateStats();
+                        showToast('success', 'Import Complete', 'Your data has been imported successfully');
+                    }
+                } catch (error) {
+                    showToast('error', 'Import Failed', 'Invalid file format or corrupted data');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        function showArchived() {
+            quickFilter = 'archived';
+            document.querySelectorAll('.quick-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-filter="archived"]').classList.add('active');
+            renderProjects();
+        }
+
+        function clearAllData() {
+            if (!confirm('⚠️ WARNING: This will permanently delete ALL projects and data. This action cannot be undone. Are you sure?')) {
+                return;
+            }
+            
+            if (!confirm('This is your last chance. All data will be lost forever. Continue?')) {
+                return;
+            }
+            
+            projects = [];
+            activityLog = [];
+            saveToStorage();
+            renderProjects();
+            updateStats();
+            showToast('info', 'Data Cleared', 'All data has been removed');
+        }
+
+        // Tag Management
+        function initTagInput() {
+            // Project modal tags
+            const tagInput = document.getElementById('tagInput');
+            tagInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTag(this.value);
+                    this.value = '';
+                }
+            });
+            
+            // Details modal tags
+            const detailTagInput = document.getElementById('detailTagInput');
+            detailTagInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addDetailTag(this.value);
+                    this.value = '';
+                }
+            });
+        }
+
+        function addTag(tag) {
+            if (!tag || !tag.trim()) return;
+            tag = tag.trim().toLowerCase();
+            
+            if (!projectTags.includes(tag)) {
+                projectTags.push(tag);
+                renderTags();
+            }
+        }
+
+        function removeTag(tag) {
+            projectTags = projectTags.filter(t => t !== tag);
+            renderTags();
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tagContainer');
+            const input = document.getElementById('tagInput');
+            
+            // Clear existing tags
+            container.querySelectorAll('.tag-item').forEach(el => el.remove());
+            
+            // Add tags before input
+            projectTags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag-item';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}')">×</span>
+                `;
+                container.insertBefore(tagElement, input);
+            });
+        }
+
+        function addDetailTag(tag) {
+            if (!tag || !tag.trim() || !currentProject) return;
+            tag = tag.trim().toLowerCase();
+            
+            if (!currentProject.tags) currentProject.tags = [];
+            
+            if (!currentProject.tags.includes(tag)) {
+                currentProject.tags.push(tag);
+                projectTags = currentProject.tags;
+                renderDetailTags();
+                saveToStorage();
+                renderProjects();
+            }
+        }
+
+        function removeDetailTag(tag) {
+            if (!currentProject) return;
+            currentProject.tags = currentProject.tags.filter(t => t !== tag);
+            projectTags = currentProject.tags;
+            renderDetailTags();
+            saveToStorage();
+            renderProjects();
+        }
+
+        function renderDetailTags() {
+            const container = document.getElementById('detailTagContainer');
+            const input = document.getElementById('detailTagInput');
+            
+            // Clear existing tags
+            container.querySelectorAll('.tag-item').forEach(el => el.remove());
+            
+            // Add tags before input
+            projectTags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag-item';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeDetailTag('${tag}')">×</span>
+                `;
+                container.insertBefore(tagElement, input);
+            });
+        }
+
+        // Keyboard Shortcuts
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + N: New project
+                if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                    e.preventDefault();
+                    openNewProjectModal();
+                }
+                
+                // Ctrl/Cmd + /: Focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                
+                // Ctrl/Cmd + E: Export
+                if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                    e.preventDefault();
+                    exportData();
+                }
+                
+                // Ctrl/Cmd + I: Import
+                if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+                    e.preventDefault();
+                    importData();
+                }
+                
+                // Escape: Close modal
+                if (e.key === 'Escape') {
+                    const modals = document.querySelectorAll('.modal.active');
+                    modals.forEach(modal => modal.classList.remove('active'));
+                }
+            });
+        }
+
+        // Real-time search
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderProjects();
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown').forEach(d => {
+                    d.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
